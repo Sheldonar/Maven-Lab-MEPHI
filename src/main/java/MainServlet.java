@@ -8,7 +8,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.UUID;
 
-
+// разобраться с джавой и томкатом (Ф)
+//
 @WebServlet("") // my comment me
 public class MainServlet extends HttpServlet {
     private Map<Integer, Set<String>> base;
@@ -25,18 +26,19 @@ public class MainServlet extends HttpServlet {
         int b = random.nextInt(472) - 125;
         int sum = a + b;
         String hash = getHash(a, b);
-        if (base.containsKey(sum))
-        {
-            String s = hash;
-            base.get(sum).add(s);
-        }
-        else
-        {
-            String s = hash;
-            Set<String> set = new HashSet<String>();
-            set.add(s);
-            base.put(sum, set);
-        }
+        base.merge(sum, Collections.singleton(hash), (s1, s2)->{ // слияние 2х мап
+            s1.addAll(s2);
+            return s1;
+        });
+//        if (base.containsKey(sum)) { // TODO lambda(merge)
+//            String s = hash;
+//            base.get(sum).add(s);
+//        } else {
+//            String s = hash;
+//            Set<String> set = new HashSet<String>();
+//            set.add(s);
+//            base.put(sum, set);
+//        }
         request.setAttribute("a", a);
         request.setAttribute("b", b);
         request.setAttribute("hash", hash);
@@ -44,9 +46,9 @@ public class MainServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-        try {
-            int answer = Integer.parseInt(request.getParameter("answer"));
-        String HashedSum = request.getParameter("hash");
+        try {   //TODO делать проверки руками и писать нормальные сообщения об ошибках
+            int answer = Integer.parseInt(request.getParameter("answer")); // TODO расставить все над правильными ссылками.
+        String HashedSum = request.getParameter("hash"); // TODO на jsp не должно быть джава кода
         if (base.containsKey(answer) && base.get(answer).contains(HashedSum)) {
             request.getRequestDispatcher("hello_inside.jsp").forward(request, response);
             String newId = UUID.randomUUID().toString();
@@ -54,8 +56,7 @@ public class MainServlet extends HttpServlet {
             response.addCookie(cookie);
             single.addId(newId);
             request.getRequestDispatcher("hello_inside.jsp").forward(request, response);
-        }
-        else{
+        } else{
             response.sendRedirect("http://localhost:8080/LAB2_war_exploded/");
         }
         }catch (Exception e){
@@ -64,6 +65,6 @@ public class MainServlet extends HttpServlet {
     }
 
     private String getHash(int a, int b) {
-        return  Integer.toString(322 * a + 1337 * b + 1488 * (int)System.currentTimeMillis());
+        return  String.valueOf(322 * a + 1337 * b + 1488 * System.currentTimeMillis());
     }
 }

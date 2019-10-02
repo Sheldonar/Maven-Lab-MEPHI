@@ -21,7 +21,7 @@ public class MyFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
         Cookie[] cookies = request.getCookies();
-        if (!(cookies == null)) {
+        if (cookies != null) { // TODO переделать это в лямбды
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("sessionId")) {
                     if (singleton.containsSessionId(cookie.getValue())) {
