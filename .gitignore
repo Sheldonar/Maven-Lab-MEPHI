@@ -1,0 +1,16 @@
+# except .gitignore
+
+
+
+!.gitignore
+
+
+
+index.jsp
+
+
+
+target
+
+# Project exclude paths
+/out/
