@@ -11,11 +11,7 @@
     <title>hello_inside.jsp</title>
 </head>
 <body>
-<%
-    Cookie[] cookies = request.getCookies();
-    if (cookies == null)
-        response.sendRedirect("http://localhost:8080/LAB2_war_exploded/");
-%>
+
 <h3> Congratulations, you are able to calculate two numbers! </h3>
 </body>
 </html>

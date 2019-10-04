@@ -1,3 +1,4 @@
+import java.util.HashSet;
 import java.util.Queue;
 import java.util.Set;
 
@@ -14,6 +15,7 @@ public class Singleton {
     }
 
     public static void addId(String id) {
+        setId = new HashSet<String>();
         setId.add(id);
     }
 

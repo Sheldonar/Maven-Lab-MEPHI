@@ -1,3 +1,4 @@
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -8,13 +9,12 @@ import java.io.IOException;
 import java.util.*;
 import java.util.UUID;
 
-// разобраться с джавой и томкатом (Ф)
-//
-@WebServlet("") // my comment me
+
+
 public class MainServlet extends HttpServlet {
     private Map<Integer, Set<String>> base;
     public Singleton single;
-// comment
+
     @Override
      public void init(){
          base = new HashMap<Integer, Set<String>>();
@@ -26,42 +26,44 @@ public class MainServlet extends HttpServlet {
         int b = random.nextInt(472) - 125;
         int sum = a + b;
         String hash = getHash(a, b);
-        base.merge(sum, Collections.singleton(hash), (s1, s2)->{ // слияние 2х мап
+       /* base.merge(sum, Collections.singleton(hash), (s1, s2)->{ // слияние 2х мап
             s1.addAll(s2);
             return s1;
-        });
-//        if (base.containsKey(sum)) { // TODO lambda(merge)
-//            String s = hash;
-//            base.get(sum).add(s);
-//        } else {
-//            String s = hash;
-//            Set<String> set = new HashSet<String>();
-//            set.add(s);
-//            base.put(sum, set);
-//        }
+        });*/
+        if (base.containsKey(sum)) { // TODO lambda(merge)
+            String s = hash;
+            base.get(sum).add(s);
+        } else {
+            String s = hash;
+            Set<String> set = new HashSet<String>();
+            set.add(s);
+            base.put(sum, set);
+        }
         request.setAttribute("a", a);
         request.setAttribute("b", b);
         request.setAttribute("hash", hash);
-        request.getRequestDispatcher("count_to_get_in.jsp").forward(request, response);
+        RequestDispatcher disp = request.getRequestDispatcher("count_to_get_in.jsp");
+        disp.forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-        try {   //TODO делать проверки руками и писать нормальные сообщения об ошибках
-            int answer = Integer.parseInt(request.getParameter("answer")); // TODO расставить все над правильными ссылками.
-        String HashedSum = request.getParameter("hash"); // TODO на jsp не должно быть джава кода
-        if (base.containsKey(answer) && base.get(answer).contains(HashedSum)) {
-            request.getRequestDispatcher("hello_inside.jsp").forward(request, response);
-            String newId = UUID.randomUUID().toString();
-            Cookie cookie = new Cookie("sessionId", newId);
-            response.addCookie(cookie);
-            single.addId(newId);
-            request.getRequestDispatcher("hello_inside.jsp").forward(request, response);
-        } else{
-            response.sendRedirect("http://localhost:8080/LAB2_war_exploded/");
+           //TODO делать проверки руками и писать нормальные сообщения об ошибках
+            String answer = (request.getParameter("answer")); // TODO расставить все над правильными ссылками.
+        if (answer == "")
+            response.sendRedirect("http://localhost:8080/LAB2_war_exploded/count_to_get_in");
+            else {
+            String HashedSum = request.getParameter("hash"); // TODO на jsp не должно быть джава кода
+            if (base.containsKey(Integer.parseInt(answer)) && base.get(Integer.parseInt(answer)).contains(HashedSum)) {
+                String newId = UUID.randomUUID().toString();
+                Cookie cookie = new Cookie("sessionId", newId);
+                response.addCookie(cookie);
+                single.addId(newId);
+                response.sendRedirect("http://localhost:8080/LAB2_war_exploded/hello_inside");
+            } else {
+                response.sendRedirect("http://localhost:8080/LAB2_war_exploded/count_to_get_in");
+            }
         }
-        }catch (Exception e){
-            request.getRequestDispatcher("count_to_get_in.jsp").forward(request, response);
-        }
+
     }
 
     private String getHash(int a, int b) {

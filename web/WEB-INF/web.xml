@@ -14,7 +14,21 @@
     <servlet-mapping>
 
         <servlet-name>OurServlet</servlet-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>/count_to_get_in</url-pattern>
+
+    </servlet-mapping>
+
+    <servlet>
+
+        <servlet-name>OurNewServlet</servlet-name>
+        <servlet-class>SecondServlet</servlet-class>
+
+    </servlet>
+
+    <servlet-mapping>
+
+        <servlet-name>OurNewServlet</servlet-name>
+        <url-pattern>/hello_inside</url-pattern>
 
     </servlet-mapping>
 

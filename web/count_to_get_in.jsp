@@ -17,7 +17,7 @@
 TRY TO COUNT SUM
 <br>
 
-<%
+<%--<%
     try {
         int a = (int) request.getAttribute("a");
         int b = (int) request.getAttribute("b");
@@ -31,7 +31,11 @@ TRY TO COUNT SUM
         response.sendRedirect("http://localhost:8080/LAB2_war_exploded/");
         out.println("  ");
     }
-%>
+%>--%>
+
+
+
+${a} + ${b} = ?
 
 
 

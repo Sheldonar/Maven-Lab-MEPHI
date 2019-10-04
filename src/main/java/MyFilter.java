@@ -13,6 +13,7 @@ import java.io.IOException;
 public class MyFilter implements Filter {
 
    public static Singleton singleton;
+   boolean sessionValid;
 
     private static void init(){
         singleton.GetInstance();
@@ -21,15 +22,30 @@ public class MyFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
         Cookie[] cookies = request.getCookies();
+        //sessionValid = false;
         if (cookies != null) { // TODO переделать это в лямбды
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("sessionId")) {
+                    sessionValid = false;
                     if (singleton.containsSessionId(cookie.getValue())) {
-                        request.getRequestDispatcher("hello_inside.jsp").forward(request, response);
+                        sessionValid = true;
+                        request.getRequestDispatcher("hello_inside.jsp").forward(req, res);
                     }
                 }
             }
         }
+        /*if (request.getRequestURI().equals(request.getContextPath() + "/hello_inside")){
+            if (sessionValid == true)
+                request.getRequestDispatcher("hello_inside.jsp").forward(req, res);
+            else
+                request.getRequestDispatcher("count_to_get_in.jsp").forward(req, res);
+        }
+        else if (request.getRequestURI().equals(request.getContextPath() + "/count_to_get_in")){
+            if (sessionValid == true)
+                request.getRequestDispatcher("hello_inside.jsp").forward(req, res);
+            else
+                request.getRequestDispatcher("count_to_get_in.jsp").forward(req, res);
+        }*/
         chain.doFilter(request, response);
 
     }
