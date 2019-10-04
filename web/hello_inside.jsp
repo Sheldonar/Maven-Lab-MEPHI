@@ -11,7 +11,6 @@
     <title>hello_inside.jsp</title>
 </head>
 <body>
-
 <h3> Congratulations, you are able to calculate two numbers! </h3>
 </body>
 </html>

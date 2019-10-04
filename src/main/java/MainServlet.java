@@ -30,7 +30,7 @@ public class MainServlet extends HttpServlet {
             s1.addAll(s2);
             return s1;
         });*/
-        if (base.containsKey(sum)) { // TODO lambda(merge)
+        if (base.containsKey(sum)) {
             String s = hash;
             base.get(sum).add(s);
         } else {
@@ -47,12 +47,12 @@ public class MainServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-           //TODO делать проверки руками и писать нормальные сообщения об ошибках
-            String answer = (request.getParameter("answer")); // TODO расставить все над правильными ссылками.
+
+            String answer = (request.getParameter("answer"));
         if (answer == "")
             response.sendRedirect("http://localhost:8080/LAB2_war_exploded/count_to_get_in");
             else {
-            String HashedSum = request.getParameter("hash"); // TODO на jsp не должно быть джава кода
+            String HashedSum = request.getParameter("hash");
             if (base.containsKey(Integer.parseInt(answer)) && base.get(Integer.parseInt(answer)).contains(HashedSum)) {
                 String newId = UUID.randomUUID().toString();
                 Cookie cookie = new Cookie("sessionId", newId);
