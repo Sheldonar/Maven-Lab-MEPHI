@@ -47,22 +47,23 @@ public class MainServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-
-            String answer = (request.getParameter("answer"));
-        if (answer == "")
-            response.sendRedirect("http://localhost:8080/LAB2_war_exploded/count_to_get_in");
-            else {
-            String HashedSum = request.getParameter("hash");
-            if (base.containsKey(Integer.parseInt(answer)) && base.get(Integer.parseInt(answer)).contains(HashedSum)) {
-                String newId = UUID.randomUUID().toString();
-                Cookie cookie = new Cookie("sessionId", newId);
-                response.addCookie(cookie);
-                single.addId(newId);
-                response.sendRedirect("http://localhost:8080/LAB2_war_exploded/hello_inside");
-            } else {
+            try {
+                String answer = (request.getParameter("answer"));
+                //response.sendRedirect("http://localhost:8080/LAB2_war_exploded/count_to_get_in");
+                String HashedSum = request.getParameter("hash");
+                if (base.containsKey(Integer.parseInt(answer)) && base.get(Integer.parseInt(answer)).contains(HashedSum)) {
+                    String newId = UUID.randomUUID().toString();
+                    Cookie cookie = new Cookie("sessionId", newId);
+                    response.addCookie(cookie);
+                    single.addId(newId);
+                    response.sendRedirect("http://localhost:8080/LAB2_war_exploded/hello_inside");
+                } else {
+                    response.sendRedirect("http://localhost:8080/LAB2_war_exploded/count_to_get_in");
+                }
+            }catch (Exception e){
                 response.sendRedirect("http://localhost:8080/LAB2_war_exploded/count_to_get_in");
             }
-        }
+
 
     }
 
