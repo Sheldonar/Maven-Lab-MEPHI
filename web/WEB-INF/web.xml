@@ -14,7 +14,7 @@
     <servlet-mapping>
 
         <servlet-name>OurServlet</servlet-name>
-        <url-pattern>/count_to_get_in</url-pattern>
+        <url-pattern>/count_to_get_in.html</url-pattern>
 
     </servlet-mapping>
 
@@ -28,23 +28,17 @@
     <servlet-mapping>
 
         <servlet-name>OurNewServlet</servlet-name>
-        <url-pattern>/hello_inside</url-pattern>
+        <url-pattern>/hello_inside.html</url-pattern>
 
     </servlet-mapping>
 
     <filter>
-
         <filter-name>NewFilter</filter-name>
-
         <filter-class>MyFilter</filter-class>
-
     </filter>
 
     <filter-mapping>
-
         <filter-name>NewFilter</filter-name>
-
         <url-pattern>*</url-pattern>
-
     </filter-mapping>
 </web-app>

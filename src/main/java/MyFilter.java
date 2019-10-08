@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.Arrays;
+
 @WebFilter("/MyFilter")
 public class MyFilter implements Filter {
 
@@ -17,20 +19,36 @@ public class MyFilter implements Filter {
      private static void init(){
         singleton.GetInstance();
     }
+
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
+
+         HttpServletRequest request = (HttpServletRequest) req;
+
+         Cookie[] cookies = request.getCookies();
+         if (cookies == null) {
+             chain.doFilter(req, res);
+         }
+         Cookie sessionId = Arrays.stream(cookies)
+                                  .filter(c -> c.getName().equals("sessionId"))
+                                  .findFirst()
+                                  .orElse(null);
+         Boolean sessionIsValid = sessionId != null && singleton.containsSessionId(sessionId.getValue());
+
+         String validUrl = sessionIsValid ? SecondServlet.URL : MainServlet.URL;
+
+         doFilterOrRedirect(req, res, chain, validUrl);
+    }
+
+    private void doFilterOrRedirect(ServletRequest req, ServletResponse res, FilterChain chain, String url) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("sessionId")) {
-                    if (singleton.containsSessionId(cookie.getValue())) {
-                        request.getRequestDispatcher("hello_inside.jsp").forward(req, res);
-                    }
-                }
-            }
-        }
-        chain.doFilter(request, response);
+        String fullUrl = request.getRequestURI();
+        String contextPath = request.getContextPath();
 
+        if (fullUrl.equals(contextPath + "/" + url)) {
+            chain.doFilter(req, res);
+        } else {
+            response.sendRedirect(url);
+        }
     }
 }

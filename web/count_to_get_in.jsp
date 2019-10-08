@@ -41,14 +41,10 @@ ${a} + ${b} = ?
 
 <form method="POST">
 your answer:
-    <input type="text" name="answer" />
+    <input type="number" name="answer" />
     <input type="submit" name="submit" value="Submit"/>
-    <%
 
-        String hash = (String) request.getAttribute("hash");
-
-    %>
-    <input type="hidden" name="hash" value="<%=hash%>" />
+    <input type="hidden" name="hash" value="${hash}" />
 </form>
 
 </body>

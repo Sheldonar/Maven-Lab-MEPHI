@@ -9,9 +9,12 @@ import java.io.IOException;
 
 
 public class SecondServlet extends HttpServlet {
+
+    final static String URL = "hello_inside.html";
+    final static String JSP = "hello_inside.jsp";
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        RequestDispatcher disp2 = req.getRequestDispatcher("count_to_get_in.jsp");
-        disp2.forward(req, resp);
+        req.getRequestDispatcher(JSP).forward(req, resp);
     }
 }
