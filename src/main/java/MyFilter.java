@@ -11,13 +11,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 
-@WebFilter("/MyFilter")
 public class MyFilter implements Filter {
 
    public static Singleton singleton;
 
-     private static void init(){
-        singleton.GetInstance();
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+        singleton = Singleton.GetInstance();
     }
 
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {

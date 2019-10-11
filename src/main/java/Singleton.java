@@ -6,7 +6,10 @@ public class Singleton {
     private static Singleton instance;
     public static Set<String> setId;
 
-    Singleton(){}
+    Singleton() {
+        setId = new HashSet<>();
+    }
+
     public static Singleton GetInstance() {
         if (instance == null){
             instance = new Singleton();
@@ -15,7 +18,6 @@ public class Singleton {
     }
 
     public static void addId(String id) {
-        setId = new HashSet<String>();
         setId.add(id);
     }
 
