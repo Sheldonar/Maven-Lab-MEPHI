@@ -12,9 +12,19 @@
     <meta charset="UTF-8">
     <title>count_to_get_in.jsp</title>
 </head>
+<style>
+    body{
+        background: dimgray;
+    }
+    H1 {
+        font-size: 120%;
+        font-family: Arial, Helvetica, sans-serif;
+        color: white;
+    }
+</style>
 <body>
 
-TRY TO COUNT SUM
+<h1> TRY TO COUNT SUM </h1>
 <br>
 
 <%--<%
@@ -32,7 +42,6 @@ TRY TO COUNT SUM
         out.println("  ");
     }
 %>--%>
-
 
 
 ${a} + ${b} = ?

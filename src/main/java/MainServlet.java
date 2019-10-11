@@ -51,14 +51,18 @@ public class MainServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         String answerStr = (request.getParameter("answer"));
         if (answerStr == null || answerStr.isEmpty()) {
-            throw new IllegalArgumentException("Введите ответ");
+            response.sendRedirect(URL);
+            return;
+            //throw new IllegalArgumentException("Введите ответ");
         }
 
         Integer answer = Integer.parseInt(answerStr);
         String hashedSum = request.getParameter("hash");
 
         if (!base.containsKey(answer) || !base.get(answer).contains(hashedSum)) {
-            throw new IllegalArgumentException("Вы ввели неверный ответ");
+            response.sendRedirect(URL);
+            return;
+            //throw new IllegalArgumentException("Сумма посчитана неверно");
         }
 
         String newId = UUID.randomUUID().toString();

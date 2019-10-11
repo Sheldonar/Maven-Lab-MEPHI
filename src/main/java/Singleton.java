@@ -6,26 +6,18 @@ public class Singleton {
     private static Singleton instance;
     public static Set<String> setId;
 
-    Singleton() {
-        setId = new HashSet<>();
-    }
-
-    public static Singleton GetInstance() {
+    Singleton(){}
+    public static Singleton getInstance() {
         if (instance == null){
             instance = new Singleton();
         }
         return instance;
     }
-
     public static void addId(String id) {
+        setId = new HashSet<String>();
         setId.add(id);
     }
-
     public static boolean containsSessionId(String name){
-        if (setId.contains(name))
-            return true;
-        else
-            return false;
+        return setId.contains(name);
     }
-
 }
